@@ -1,0 +1,19 @@
+{
+  "name": "sticky-header",
+  "version": "1.0.0",
+  "description": "An AngularJS directive for making headers that won't scroll past the top of the screen.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CareerCruising/sticky-header.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CareerCruising/sticky-header/issues"
+  },
+  "homepage": "https://github.com/CareerCruising/sticky-header#readme"
+}
