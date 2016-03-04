@@ -3,7 +3,7 @@
 (function(angular){
     var fsm = angular.module('fsm', []);
     
-    fsm.directive('fsmStickyHeader', [function(){
+    fsm.directive('fsmStickyHeader', ['$window',function($window){
         return {
             restrict: 'EA',
             replace: false,
@@ -14,21 +14,21 @@
                 contentOffset: '='
             },
             link: function(scope, element, attributes, control){
-                var header = $(element, this);
+                var header = angular.element(element, this);
                 var clonedHeader = null;
-                var content = $(scope.scrollBody);
-                var scrollableContainer = $(scope.scrollableContainer);
+                var content = angular.element(scope.scrollBody);
+                var scrollableContainer = angular.element(scope.scrollableContainer);
                 var contentOffset = scope.contentOffset || 0;
     
                 if (scrollableContainer.length === 0){
-                    scrollableContainer = $(window);
+                    scrollableContainer = $window;
                 }
 
                 function setColumnHeaderSizes() {
                     if (clonedHeader.is('tr') || clonedHeader.is('thead')) {
                         var clonedColumns = clonedHeader.find('th');
                         header.find('th').each(function (index, column) {
-                            var clonedColumn = $(clonedColumns[index]);
+                            var clonedColumn = angular.element(clonedColumns[index]);
                             clonedColumn.css( 'width', column.offsetWidth + 'px');
                         });
                     }
@@ -150,9 +150,9 @@
 
                 function tabOutOfMenu(e) {
                     if (e.shiftKey) {
-                        $('[fsm-menu-button]').focus();
+                        angular.element('[fsm-menu-button]').focus();
                     } else {
-                        var firstTabItem = $('[tabindex=1]');
+                        var firstTabItem = angular.element('[tabindex=1]');
 
                         if (firstTabItem.length == 0) {
                             return;
@@ -166,7 +166,7 @@
                 }
 
                 function triggerMenuItem(e) {
-                    e.currentTarget = $(menuItems[activeMenu]).children('a').first();
+                    e.currentTarget = angular.element(menuItems[activeMenu]).children('a').first();
                     menuOnClick(e);
                 }
 
@@ -176,15 +176,15 @@
 
                     if (e.keyCode === 38) {
                         if (activeMenu > 0) {
-                            $(menuItems[activeMenu - 1]).children('a').first().focus();
+                            angular.element(menuItems[activeMenu - 1]).children('a').first().focus();
                         } else {
-                            $(menuItems[menuItems.length - 1]).children('a').first().focus();
+                            angular.element(menuItems[menuItems.length - 1]).children('a').first().focus();
                         }
                     } else if (e.keyCode === 40) {
                         if (activeMenu < (menuItems.length - 1)) {
-                            $(menuItems[activeMenu + 1]).children('a').first().focus();
+                            angular.element(menuItems[activeMenu + 1]).children('a').first().focus();
                         } else {
-                            $(menuItems[0]).children('a').first().focus();
+                            angular.element(menuItems[0]).children('a').first().focus();
                         }
                     }
                 }
@@ -204,7 +204,7 @@
                     e.stopPropagation();
 
                     activeMenu = getCurrentMenuItem();
-                    $(menuItems[activeMenu]).children('a').first().focus();
+                    angular.element(menuItems[activeMenu]).children('a').first().focus();
                 }
 
                 menuTitles.click(menuOnClick);
@@ -250,18 +250,18 @@
             replace: false,
             scope: {},
             link: function (scope, element, attributes, control) {
-                var menuButton = $(element, this);
+                var menuButton = angular.element(element, this);
 
                 menuButton.addClass('fsm-menu-button');
                 menuButton.keydown(menuOnKeydown);
-                $('body').keydown(bodyOnKeydown);
+                angular.element('body').keydown(bodyOnKeydown);
 
                 function bodyOnKeydown(e) {
                     if (e.keyCode === 77 && e.ctrlKey && e.altKey) {
                         if (isMenuClosed()) {
                             menuOnClick();
                         }
-                        $('[fsm-menu]').focus();
+                        angular.element('[fsm-menu]').focus();
                     } else if (e.keyCode === 77 && e.ctrlKey) {
                         menuButton.focus();
                         menuOnClick();
@@ -269,11 +269,11 @@
                 }
 
                 function isMenuClosed() {
-                    return $('body').hasClass('fsm-menu-toggle');
+                    return angular.element('body').hasClass('fsm-menu-toggle');
                 }
 
                 function menuOnClick() {
-                    $('body').toggleClass('fsm-menu-toggle');
+                    angular.element('body').toggleClass('fsm-menu-toggle');
                     setMenuSpin();
                     setTimeout(setMenuSpin, 50);
                 };
@@ -300,7 +300,7 @@
         }
     });
     
-    fsm.directive('fsmBigData', ['$filter', function ($filter) {
+    fsm.directive('fsmBigData', ['$filter','$window','$document', function ($filter) {
     
         return {
             restrict: 'AE',
@@ -324,7 +324,7 @@
                 var rawData = [];
                 var sortedData = [];
                 var pagedData = [];
-                var page = $(window);
+                var page = $window;
                 var sortTypes = [ 'None', 'Ascending', 'Descending' ];
                 var sortColumns = [];
         
@@ -378,9 +378,9 @@
                     }
     
                     function onPageScroll() {
-                        var s = $(window).scrollTop();
-                        var d = $(document).height();
-                        var c = $(window).height();
+                        var s = $window.scrollTop();
+                        var d = $document.height();
+                        var c = $window.height();
                         var scrollPercent = (s / (d-c));
     
                         if (scrollPercent > 0.98) {
