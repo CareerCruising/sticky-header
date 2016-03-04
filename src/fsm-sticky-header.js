@@ -21,7 +21,7 @@
                 var contentOffset = scope.contentOffset || 0;
     
                 if (scrollableContainer.length === 0){
-                    scrollableContainer = $window;
+                    scrollableContainer = angular.element($window);
                 }
 
                 function setColumnHeaderSizes() {
