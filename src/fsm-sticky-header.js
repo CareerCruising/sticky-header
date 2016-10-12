@@ -54,7 +54,7 @@
                             calculateSize();
                         }
                     } else {
-                        if (clonedHeader){
+                        if (clonedHeader && scrollTop < (contentTop - scope.scrollStop)){
                             /*
                              * remove cloned element (switched places with original on creation)
                              */
